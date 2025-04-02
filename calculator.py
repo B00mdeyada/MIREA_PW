@@ -49,8 +49,12 @@ def calculator():
     choice = input("Enter choice (1/2/3/4/5/6/7): ")
 
     if choice in ('1', '2', '3', '4', '5'):
-        num1 = float(input("Enter first number: "))
-        num2 = float(input("Enter second number: "))
+        try:
+            num1 = float(input("Enter first number: "))
+            num2 = float(input("Enter second number: "))
+        except ValueError:
+            print("Invalid input! Please enter a valid number.")
+            return
 
         if choice == '1':
             print(f"Result: {add(num1, num2)}")
@@ -66,19 +70,19 @@ def calculator():
         elif choice == '5':
             print(f"Result: {power(num1, num2)}")
     elif choice == '6':
-        num = float(input("Enter a number: "))
         try:
+            num = float(input("Enter a number: "))
             print(f"Result: {sqrt(num)}")
         except ValueError as e:
             print(e)
     elif choice == '7':
-        num = int(input("Enter an integer: "))
         try:
+            num = int(input("Enter an integer: "))
             print(f"Result: {factorial(num)}")
         except ValueError as e:
             print(e)
     else:
-        print("Invalid input")
+        print("Invalid choice! Please select a valid operation.")
 
 
 if __name__ == "__main__":
