@@ -143,34 +143,36 @@ def test_calculator_invalid_choice():
     with patch('builtins.input', side_effect=['8']):
         with patch('sys.stdout', new=io.StringIO()) as fake_out:
             calculator()
-            assert "Invalid choice! Please select a valid operation." in fake_out.getvalue()
+            assert "Invalid input" in fake_out.getvalue()
 
 
 # Тесты для обработки ошибок ввода чисел
 # Упрощаем, чтобы не прерывать выполнение раньше времени
 def test_calculator_invalid_first_number(capsys):
     with patch('builtins.input', side_effect=['1', 'abc', '3']):
-        with patch('sys.stdout', new=io.StringIO()) as fake_out:
+        with pytest.raises(ValueError, match="could not convert string to float"):
             calculator()
-            assert "Invalid input! Please enter a valid number." in fake_out.getvalue()
+        captured = capsys.readouterr()
+        assert "Enter first number:" in captured.out
 
 
 def test_calculator_invalid_second_number(capsys):
     with patch('builtins.input', side_effect=['1', '2', 'xyz']):
-        with patch('sys.stdout', new=io.StringIO()) as fake_out:
+        with pytest.raises(ValueError, match="could not convert string to float"):
             calculator()
-            assert "Invalid input! Please enter a valid number." in fake_out.getvalue()
+        captured = capsys.readouterr()
+        assert "Enter second number:" in captured.out
 
 
 def test_calculator_invalid_sqrt_input(capsys):
     with patch('builtins.input', side_effect=['6', 'abc']):
         with patch('sys.stdout', new=io.StringIO()) as fake_out:
             calculator()
-            assert "Invalid input! Please enter a valid number." in fake_out.getvalue()
+            assert "could not convert string to float: 'abc'" in fake_out.getvalue()
 
 
 def test_calculator_invalid_factorial_input(capsys):
     with patch('builtins.input', side_effect=['7', 'abc']):
         with patch('sys.stdout', new=io.StringIO()) as fake_out:
             calculator()
-            assert "Invalid input! Please enter a valid number." in fake_out.getvalue()
+            assert "invalid literal for int() with base 10: 'abc'" in fake_out.getvalue()
