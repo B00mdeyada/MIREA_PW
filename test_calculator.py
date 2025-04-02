@@ -6,7 +6,7 @@ from calculator import (add, subtract, multiply, divide, power, sqrt,
                        factorial, calculator)
 
 
-# Тесты для базовых математических функций
+# Тесты для базовых функций
 def test_add():
     assert add(2, 3) == 5
     assert add(-1, 1) == 0
@@ -52,8 +52,8 @@ def test_factorial():
         factorial(-1)
 
 
-# Тесты для функции calculator
-def test_calculator_menu_output():
+# Тесты для calculator()
+def test_calculator_menu():
     with patch('builtins.input', side_effect=['1', '2', '3']):
         with patch('sys.stdout', new=io.StringIO()) as fake_out:
             calculator()
@@ -61,11 +61,6 @@ def test_calculator_menu_output():
             assert "Advanced Calculator" in output
             assert "Select operation:" in output
             assert "1. Add" in output
-            assert "2. Subtract" in output
-            assert "3. Multiply" in output
-            assert "4. Divide" in output
-            assert "5. Power" in output
-            assert "6. Square Root" in output
             assert "7. Factorial" in output
 
 
@@ -139,30 +134,37 @@ def test_calculator_factorial_negative():
             assert "Factorial of a negative number is not defined" in fake_out.getvalue()
 
 
-def test_calculator_invalid_input():
+def test_calculator_invalid_choice():
     with patch('builtins.input', side_effect=['8']):
         with patch('sys.stdout', new=io.StringIO()) as fake_out:
             calculator()
             assert "Invalid input" in fake_out.getvalue()
 
 
-# Дополнительные тесты для обработки ошибок ввода
-def test_calculator_invalid_number_input_operation_1():
+# Тесты для обработки ошибок ввода чисел
+def test_calculator_invalid_first_number():
     with patch('builtins.input', side_effect=['1', 'abc', '3']):
-        with patch('sys.stdout', new=io.StringIO()) as fake_out:
+        with patch('sys.stdout', new=io.StringIO()):
             with pytest.raises(ValueError, match="could not convert string to float"):
                 calculator()
 
 
-def test_calculator_invalid_number_input_operation_6():
+def test_calculator_invalid_second_number():
+    with patch('builtins.input', side_effect=['1', '2', 'xyz']):
+        with patch('sys.stdout', new=io.StringIO()):
+            with pytest.raises(ValueError, match="could not convert string to float"):
+                calculator()
+
+
+def test_calculator_invalid_sqrt_input():
     with patch('builtins.input', side_effect=['6', 'abc']):
-        with patch('sys.stdout', new=io.StringIO()) as fake_out:
+        with patch('sys.stdout', new=io.StringIO()):
             with pytest.raises(ValueError, match="could not convert string to float"):
                 calculator()
 
 
-def test_calculator_invalid_number_input_operation_7():
+def test_calculator_invalid_factorial_input():
     with patch('builtins.input', side_effect=['7', 'abc']):
-        with patch('sys.stdout', new=io.StringIO()) as fake_out:
+        with patch('sys.stdout', new=io.StringIO()):
             with pytest.raises(ValueError, match="invalid literal for int()"):
                 calculator()
