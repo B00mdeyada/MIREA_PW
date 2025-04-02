@@ -5,6 +5,7 @@ on:
       - master
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   sonarqube:
     name: SonarQube
@@ -21,13 +22,13 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install pytest pytest-cov
-
-      - name: Run tests with coverage
-        run: pytest --cov=calculator --cov-report=xml
+        run: pip install pytest pytest-cov  # Если установка зависимостей всё-таки нужна для других целей, оставьте эту строку
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
+        with:
+          args: >
+            -Dsonar.projectKey=your_project_key
+            -Dsonar.projectName=your_project_name
