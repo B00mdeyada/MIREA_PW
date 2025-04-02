@@ -3,7 +3,7 @@ from unittest.mock import patch
 import io
 import sys
 from calculator import (add, subtract, multiply, divide, power, sqrt, 
-                       factorial, calculator)  # Импорт из calculator.py
+                       factorial, calculator)
 
 
 # Тесты для базовых математических функций
@@ -52,7 +52,23 @@ def test_factorial():
         factorial(-1)
 
 
-# Тесты для функции calculator с использованием mock ввода-вывода
+# Тесты для функции calculator
+def test_calculator_menu_output():
+    with patch('builtins.input', side_effect=['1', '2', '3']):
+        with patch('sys.stdout', new=io.StringIO()) as fake_out:
+            calculator()
+            output = fake_out.getvalue()
+            assert "Advanced Calculator" in output
+            assert "Select operation:" in output
+            assert "1. Add" in output
+            assert "2. Subtract" in output
+            assert "3. Multiply" in output
+            assert "4. Divide" in output
+            assert "5. Power" in output
+            assert "6. Square Root" in output
+            assert "7. Factorial" in output
+
+
 def test_calculator_add():
     with patch('builtins.input', side_effect=['1', '2', '3']):
         with patch('sys.stdout', new=io.StringIO()) as fake_out:
@@ -128,3 +144,25 @@ def test_calculator_invalid_input():
         with patch('sys.stdout', new=io.StringIO()) as fake_out:
             calculator()
             assert "Invalid input" in fake_out.getvalue()
+
+
+# Дополнительные тесты для обработки ошибок ввода
+def test_calculator_invalid_number_input_operation_1():
+    with patch('builtins.input', side_effect=['1', 'abc', '3']):
+        with patch('sys.stdout', new=io.StringIO()) as fake_out:
+            with pytest.raises(ValueError, match="could not convert string to float"):
+                calculator()
+
+
+def test_calculator_invalid_number_input_operation_6():
+    with patch('builtins.input', side_effect=['6', 'abc']):
+        with patch('sys.stdout', new=io.StringIO()) as fake_out:
+            with pytest.raises(ValueError, match="could not convert string to float"):
+                calculator()
+
+
+def test_calculator_invalid_number_input_operation_7():
+    with patch('builtins.input', side_effect=['7', 'abc']):
+        with patch('sys.stdout', new=io.StringIO()) as fake_out:
+            with pytest.raises(ValueError, match="invalid literal for int()"):
+                calculator()
