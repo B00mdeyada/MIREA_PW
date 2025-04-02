@@ -61,6 +61,11 @@ def test_calculator_menu():
             assert "Advanced Calculator" in output
             assert "Select operation:" in output
             assert "1. Add" in output
+            assert "2. Subtract" in output
+            assert "3. Multiply" in output
+            assert "4. Divide" in output
+            assert "5. Power" in output
+            assert "6. Square Root" in output
             assert "7. Factorial" in output
 
 
@@ -142,29 +147,34 @@ def test_calculator_invalid_choice():
 
 
 # Тесты для обработки ошибок ввода чисел
-def test_calculator_invalid_first_number():
+# Упрощаем, чтобы не прерывать выполнение раньше времени
+def test_calculator_invalid_first_number(capsys):
     with patch('builtins.input', side_effect=['1', 'abc', '3']):
-        with patch('sys.stdout', new=io.StringIO()):
-            with pytest.raises(ValueError, match="could not convert string to float"):
-                calculator()
+        with pytest.raises(ValueError, match="could not convert string to float"):
+            calculator()
+        captured = capsys.readouterr()
+        assert "Enter first number:" in captured.out
 
 
-def test_calculator_invalid_second_number():
+def test_calculator_invalid_second_number(capsys):
     with patch('builtins.input', side_effect=['1', '2', 'xyz']):
-        with patch('sys.stdout', new=io.StringIO()):
-            with pytest.raises(ValueError, match="could not convert string to float"):
-                calculator()
+        with pytest.raises(ValueError, match="could not convert string to float"):
+            calculator()
+        captured = capsys.readouterr()
+        assert "Enter second number:" in captured.out
 
 
-def test_calculator_invalid_sqrt_input():
+def test_calculator_invalid_sqrt_input(capsys):
     with patch('builtins.input', side_effect=['6', 'abc']):
-        with patch('sys.stdout', new=io.StringIO()):
-            with pytest.raises(ValueError, match="could not convert string to float"):
-                calculator()
+        with pytest.raises(ValueError, match="could not convert string to float"):
+            calculator()
+        captured = capsys.readouterr()
+        assert "Enter a number:" in captured.out
 
 
-def test_calculator_invalid_factorial_input():
+def test_calculator_invalid_factorial_input(capsys):
     with patch('builtins.input', side_effect=['7', 'abc']):
-        with patch('sys.stdout', new=io.StringIO()):
-            with pytest.raises(ValueError, match="invalid literal for int()"):
-                calculator()
+        with pytest.raises(ValueError, match="invalid literal for int()"):
+            calculator()
+        captured = capsys.readouterr()
+        assert "Enter an integer:" in captured.out
