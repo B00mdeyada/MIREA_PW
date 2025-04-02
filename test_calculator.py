@@ -143,38 +143,34 @@ def test_calculator_invalid_choice():
     with patch('builtins.input', side_effect=['8']):
         with patch('sys.stdout', new=io.StringIO()) as fake_out:
             calculator()
-            assert "Invalid input" in fake_out.getvalue()
+            assert "Invalid choice! Please select a valid operation." in fake_out.getvalue()
 
 
 # Тесты для обработки ошибок ввода чисел
 # Упрощаем, чтобы не прерывать выполнение раньше времени
 def test_calculator_invalid_first_number(capsys):
     with patch('builtins.input', side_effect=['1', 'abc', '3']):
-        with pytest.raises(ValueError, match="could not convert string to float"):
+        with patch('sys.stdout', new=io.StringIO()) as fake_out:
             calculator()
-        captured = capsys.readouterr()
-        assert "Enter first number:" in captured.out
+            assert "Invalid input! Please enter a valid number." in fake_out.getvalue()
 
 
 def test_calculator_invalid_second_number(capsys):
     with patch('builtins.input', side_effect=['1', '2', 'xyz']):
-        with pytest.raises(ValueError, match="could not convert string to float"):
+        with patch('sys.stdout', new=io.StringIO()) as fake_out:
             calculator()
-        captured = capsys.readouterr()
-        assert "Enter second number:" in captured.out
+            assert "Invalid input! Please enter a valid number." in fake_out.getvalue()
 
 
 def test_calculator_invalid_sqrt_input(capsys):
     with patch('builtins.input', side_effect=['6', 'abc']):
-        with pytest.raises(ValueError, match="could not convert string to float"):
+        with patch('sys.stdout', new=io.StringIO()) as fake_out:
             calculator()
-        captured = capsys.readouterr()
-        assert "Enter a number:" in captured.out
+            assert "Invalid input! Please enter a valid number." in fake_out.getvalue()
 
 
 def test_calculator_invalid_factorial_input(capsys):
     with patch('builtins.input', side_effect=['7', 'abc']):
-        with pytest.raises(ValueError, match="invalid literal for int()"):
+        with patch('sys.stdout', new=io.StringIO()) as fake_out:
             calculator()
-        captured = capsys.readouterr()
-        assert "Enter an integer:" in captured.out
+            assert "Invalid input! Please enter a valid number." in fake_out.getvalue()
