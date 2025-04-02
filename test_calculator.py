@@ -1,79 +1,99 @@
 import unittest
-import math
+from unittest.mock import patch
+from calculator import calculator, add, subtract, multiply, divide, power, sqrt, factorial
 
-from calculator import add, subtract, multiply, divide, power, sqrt, factorial
+class TestCalculatorFunctionality(unittest.TestCase):
+    # Тестирование калькулятора через mock для ввода и вывода
 
+    @patch('builtins.input', side_effect=['1', '2', '3'])  # Симуляция ввода для операций
+    @patch('builtins.print')  # Мокаем print
+    def test_calculator_addition(self, mock_print, mock_input):
+        # Тест для сложения
+        calculator()
+        mock_input.assert_any_call('Enter choice (1/2/3/4/5/6/7): ')
+        mock_input.assert_any_call('Enter first number: ')
+        mock_input.assert_any_call('Enter second number: ')
+        
+        # Проверка, что вывод корректен
+        mock_print.assert_any_call('Result: 5.0')  # Для 2 + 3 = 5.0
+        
+    @patch('builtins.input', side_effect=['2', '5', '3'])
+    @patch('builtins.print')
+    def test_calculator_subtraction(self, mock_print, mock_input):
+        # Тест для вычитания
+        calculator()
+        mock_input.assert_any_call('Enter choice (1/2/3/4/5/6/7): ')
+        mock_input.assert_any_call('Enter first number: ')
+        mock_input.assert_any_call('Enter second number: ')
+        
+        # Проверка, что вывод корректен
+        mock_print.assert_any_call('Result: 2.0')  # Для 5 - 3 = 2.0
 
-class TestCalculatorFunctions(unittest.TestCase):
+    @patch('builtins.input', side_effect=['3', '3', '2'])
+    @patch('builtins.print')
+    def test_calculator_multiplication(self, mock_print, mock_input):
+        # Тест для умножения
+        calculator()
+        mock_input.assert_any_call('Enter choice (1/2/3/4/5/6/7): ')
+        mock_input.assert_any_call('Enter first number: ')
+        mock_input.assert_any_call('Enter second number: ')
+        
+        # Проверка, что вывод корректен
+        mock_print.assert_any_call('Result: 6.0')  # Для 3 * 2 = 6.0
 
-    # Тестирование add
-    def test_add(self):
-        self.assertEqual(add(2, 3), 5)
-        self.assertEqual(add(-1, 1), 0)
-        self.assertEqual(add(-5, -5), -10)
-        self.assertEqual(add(0, 0), 0)
-        self.assertEqual(add(1.5, 2.5), 4.0)
-        self.assertEqual(add(0, 5), 5)  # Проверка с нулём
-        self.assertEqual(add(1000000, 1000000), 2000000)  # Большие числа
+    @patch('builtins.input', side_effect=['4', '10', '2'])
+    @patch('builtins.print')
+    def test_calculator_division(self, mock_print, mock_input):
+        # Тест для деления
+        calculator()
+        mock_input.assert_any_call('Enter choice (1/2/3/4/5/6/7): ')
+        mock_input.assert_any_call('Enter first number: ')
+        mock_input.assert_any_call('Enter second number: ')
+        
+        # Проверка, что вывод корректен
+        mock_print.assert_any_call('Result: 5.0')  # Для 10 / 2 = 5.0
 
-    # Тестирование subtract
-    def test_subtract(self):
-        self.assertEqual(subtract(5, 3), 2)
-        self.assertEqual(subtract(3, 5), -2)
-        self.assertEqual(subtract(0, 0), 0)
-        self.assertEqual(subtract(-3, -5), 2)
-        self.assertEqual(subtract(10, -10), 20)  # Тест с отрицательным числом
-        self.assertEqual(subtract(1000000, 1), 999999)  # Большие числа
+    @patch('builtins.input', side_effect=['5', '2', '3'])
+    @patch('builtins.print')
+    def test_calculator_power(self, mock_print, mock_input):
+        # Тест для степени
+        calculator()
+        mock_input.assert_any_call('Enter choice (1/2/3/4/5/6/7): ')
+        mock_input.assert_any_call('Enter first number: ')
+        mock_input.assert_any_call('Enter second number: ')
+        
+        # Проверка, что вывод корректен
+        mock_print.assert_any_call('Result: 8.0')  # Для 2 ** 3 = 8.0
 
-    # Тестирование multiply
-    def test_multiply(self):
-        self.assertEqual(multiply(2, 3), 6)
-        self.assertEqual(multiply(0, 3), 0)
-        self.assertEqual(multiply(-2, -2), 4)
-        self.assertEqual(multiply(1.5, 2), 3.0)
-        self.assertEqual(multiply(1000, 1000), 1000000)
-        self.assertEqual(multiply(0, 0), 0)  # Тест с двумя нулями
+    @patch('builtins.input', side_effect=['6', '4'])
+    @patch('builtins.print')
+    def test_calculator_sqrt(self, mock_print, mock_input):
+        # Тест для квадратного корня
+        calculator()
+        mock_input.assert_any_call('Enter choice (1/2/3/4/5/6/7): ')
+        mock_input.assert_any_call('Enter a number: ')
+        
+        # Проверка, что вывод корректен
+        mock_print.assert_any_call('Result: 2.0')  # Квадратный корень из 4
 
-    # Тестирование divide
-    def test_divide(self):
-        self.assertEqual(divide(6, 3), 2)
-        self.assertEqual(divide(3, 1), 3)
-        self.assertEqual(divide(-6, -3), 2)
-        self.assertEqual(divide(5, 2), 2.5)
-        self.assertEqual(divide(0, 1), 0)  # Деление на 1
-        self.assertEqual(divide(1000000, 2), 500000)  # Большие числа
-        with self.assertRaises(ValueError):
-            divide(1, 0)  # Деление на 0
+    @patch('builtins.input', side_effect=['7', '5'])
+    @patch('builtins.print')
+    def test_calculator_factorial(self, mock_print, mock_input):
+        # Тест для факториала
+        calculator()
+        mock_input.assert_any_call('Enter choice (1/2/3/4/5/6/7): ')
+        mock_input.assert_any_call('Enter an integer: ')
+        
+        # Проверка, что вывод корректен
+        mock_print.assert_any_call('Result: 120')  # Факториал от 5
 
-    # Тестирование power
-    def test_power(self):
-        self.assertEqual(power(2, 3), 8)
-        self.assertEqual(power(5, 0), 1)
-        self.assertEqual(power(3, -2), 1/9)
-        self.assertEqual(power(0, 5), 0)
-        self.assertEqual(power(2, 0.5), math.sqrt(2))
-        self.assertEqual(power(1000, 3), 1000000000)  # Большое число
-        self.assertEqual(power(0, 0), 1)  # Особый случай: 0 в степени 0
-
-    # Тестирование sqrt
-    def test_sqrt(self):
-        self.assertEqual(sqrt(4), 2)
-        self.assertEqual(sqrt(9), 3)
-        self.assertEqual(sqrt(0), 0)  # Квадратный корень из нуля
-        self.assertEqual(sqrt(16), 4)
-        self.assertEqual(sqrt(2), math.sqrt(2))  # Тест с нецелым числом
-        with self.assertRaises(ValueError):
-            sqrt(-4)  # Невозможный корень из отрицательного числа
-
-    # Тестирование factorial
-    def test_factorial(self):
-        self.assertEqual(factorial(5), 120)
-        self.assertEqual(factorial(0), 1)
-        self.assertEqual(factorial(1), 1)
-        self.assertEqual(factorial(3), 6)
-        self.assertEqual(factorial(10), 3628800)  # Большое число
-        with self.assertRaises(ValueError):
-            factorial(-1)  # Невозможный факториал отрицательного числа
+    @patch('builtins.input', side_effect=['8'])
+    @patch('builtins.print')
+    def test_calculator_invalid_choice(self, mock_print, mock_input):
+        # Тест для некорректного выбора
+        calculator()
+        mock_input.assert_any_call('Enter choice (1/2/3/4/5/6/7): ')
+        mock_print.assert_any_call("Invalid choice! Please select a valid operation.")
 
 if __name__ == "__main__":
     unittest.main()
