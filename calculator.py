@@ -15,7 +15,8 @@ def multiply(a, b):
 
 def divide(a, b):
     if b == 0:
-        raise ValueError("Division by zero is not allowed")
+        print("Division by zero is not allowed")  # Добавлен вывод ошибки
+        return  # Можно вернуть какое-то значение или просто прекратить выполнение функции
     return a / b
 
 
@@ -25,13 +26,15 @@ def power(a, b):
 
 def sqrt(a):
     if a < 0:
-        raise ValueError("Cannot calculate the square root of a negative number")
+        print("Cannot calculate the square root of a negative number")  # Добавлен вывод ошибки
+        return  # Можно вернуть какое-то значение или просто прекратить выполнение функции
     return math.sqrt(a)
 
 
 def factorial(a):
     if a < 0:
-        raise ValueError("Factorial of a negative number is not defined")
+        print("Factorial of a negative number is not defined")  # Добавлен вывод ошибки
+        return  # Можно вернуть какое-то значение или просто прекратить выполнение функции
     return math.factorial(a)
 
 
@@ -63,22 +66,19 @@ def calculator():
         elif choice == '3':
             print(f"Result: {multiply(num1, num2)}")
         elif choice == '4':
-            try:
-                print(f"Result: {divide(num1, num2)}")
-            except ValueError as e:
-                print(e)
+            print(f"Result: {divide(num1, num2)}")  # Деление обрабатывается с выводом ошибки
         elif choice == '5':
             print(f"Result: {power(num1, num2)}")
     elif choice == '6':
         try:
             num = float(input("Enter a number: "))
-            print(f"Result: {sqrt(num)}")
+            print(f"Result: {sqrt(num)}")  # Квадратный корень обрабатывается с выводом ошибки
         except ValueError as e:
             print(e)
     elif choice == '7':
         try:
             num = int(input("Enter an integer: "))
-            print(f"Result: {factorial(num)}")
+            print(f"Result: {factorial(num)}")  # Факториал обрабатывается с выводом ошибки
         except ValueError as e:
             print(e)
     else:
