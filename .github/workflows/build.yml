@@ -25,7 +25,7 @@ jobs:
         run: pip install pytest pytest-cov
 
       - name: Run tests with coverage
-        run: pytest --cov=calculator --cov-report=xml
+        run: PYTHONPATH=. pytest --cov=calculator --cov-report=xml
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
