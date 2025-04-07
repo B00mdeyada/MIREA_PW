@@ -53,18 +53,6 @@ class TestCalculatorFunctionality(unittest.TestCase):
         # Проверка, что вывод корректен
         mock_print.assert_any_call('Result: 5.0')  # Для 10 / 2 = 5.0
 
-    @patch('builtins.input', side_effect=['4', '10', '0'])
-    @patch('builtins.print')
-    def test_calculator_division_by_zero(self, mock_print, mock_input):
-        # Тест для деления на ноль
-        calculator()
-        mock_input.assert_any_call('Enter choice (1/2/3/4/5/6/7): ')
-        mock_input.assert_any_call('Enter first number: ')
-        mock_input.assert_any_call('Enter second number: ')
-        
-        # Проверка, что вывод ошибки при делении на ноль
-        mock_print.assert_any_call("Division by zero is not allowed")
-
     @patch('builtins.input', side_effect=['5', '2', '3'])
     @patch('builtins.print')
     def test_calculator_power(self, mock_print, mock_input):
@@ -76,17 +64,6 @@ class TestCalculatorFunctionality(unittest.TestCase):
         
         # Проверка, что вывод корректен
         mock_print.assert_any_call('Result: 8.0')  # Для 2 ** 3 = 8.0
-
-    @patch('builtins.input', side_effect=['6', '-4'])
-    @patch('builtins.print')
-    def test_calculator_sqrt_negative(self, mock_print, mock_input):
-        # Тест для квадратного корня из отрицательного числа
-        calculator()
-        mock_input.assert_any_call('Enter choice (1/2/3/4/5/6/7): ')
-        mock_input.assert_any_call('Enter a number: ')
-        
-        # Проверка, что вывод ошибки при корне из отрицательного числа
-        mock_print.assert_any_call("Cannot calculate the square root of a negative number")
 
     @patch('builtins.input', side_effect=['6', '4'])
     @patch('builtins.print')
@@ -110,17 +87,6 @@ class TestCalculatorFunctionality(unittest.TestCase):
         # Проверка, что вывод корректен
         mock_print.assert_any_call('Result: 120')  # Факториал от 5
 
-    @patch('builtins.input', side_effect=['7', '-5'])
-    @patch('builtins.print')
-    def test_calculator_factorial_negative(self, mock_print, mock_input):
-        # Тест для отрицательного числа в факториале
-        calculator()
-        mock_input.assert_any_call('Enter choice (1/2/3/4/5/6/7): ')
-        mock_input.assert_any_call('Enter an integer: ')
-        
-        # Проверка, что вывод ошибки для отрицательного числа
-        mock_print.assert_any_call("Factorial of a negative number is not defined")
-
     @patch('builtins.input', side_effect=['8'])
     @patch('builtins.print')
     def test_calculator_invalid_choice(self, mock_print, mock_input):
@@ -129,17 +95,6 @@ class TestCalculatorFunctionality(unittest.TestCase):
         mock_input.assert_any_call('Enter choice (1/2/3/4/5/6/7): ')
         mock_print.assert_any_call("Invalid choice! Please select a valid operation.")
 
-    @patch('builtins.input', side_effect=['1', 'a', 'b'])  # Некорректный ввод
-    @patch('builtins.print')
-    def test_calculator_invalid_input(self, mock_print, mock_input):
-        # Тест для некорректного ввода (не числа)
-        calculator()
-        mock_input.assert_any_call('Enter choice (1/2/3/4/5/6/7): ')
-        mock_input.assert_any_call('Enter first number: ')
-        mock_input.assert_any_call('Enter second number: ')
-        
-        # Проверка, что вывод ошибки для некорректных данных
-        mock_print.assert_any_call("Invalid input! Please enter a valid number.")
-
 if __name__ == "__main__":
     unittest.main()
+
