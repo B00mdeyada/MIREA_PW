@@ -90,7 +90,7 @@ class TestCalculatorFunctionality(unittest.TestCase):
     @patch('builtins.input', side_effect=['8'])
     @patch('builtins.print')
     def test_calculator_invalid_choice(self, mock_print, mock_input):
-        # Тест для некорректного выбора
+        # Тест некорректного выбора
         calculator()
         mock_input.assert_any_call('Enter choice (1/2/3/4/5/6/7): ')
         mock_print.assert_any_call("Invalid choice! Please select a valid operation.")
